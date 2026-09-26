@@ -1,0 +1,30 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+    
+    // Reglas estrictas para aislar los datos por usuario
+    match /users/{userId} {
+      // Permitir acceso solo si el usuario está autenticado y su UID coincide con el documento
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+
+      match /alumnos/{docId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+      match /actividades/{docId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+      match /notas/{docId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+      match /asistencias/{docId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+      match /seguimientos/{docId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+  }
+}

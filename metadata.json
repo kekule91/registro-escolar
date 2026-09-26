@@ -1,0 +1,6 @@
+{
+  "name": "Registro Escolar de Notas y Presentismo 2026",
+  "description": "Sistema integral de gestión de notas, calificaciones ponderadas, cálculo bimestral y toma de presentismo escolar por cursos y bloques horarios.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
