@@ -1,0 +1,28 @@
+name: Restore staging sources
+on:
+  workflow_dispatch:
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Restore from hex staging
+        run: python3 scripts/restore_staging.py
+      - name: Verify sizes
+        run: |
+          test $(wc -c < src/context/SchoolContext.tsx) -eq 35146
+          test $(wc -c < src/components/reports/AttendanceReportsSection.tsx) -eq 53403
+          test $(wc -c < src/components/reports/PendingReportsSection.tsx) -eq 69386
+          ls -la src/context/SchoolContext.tsx src/components/reports/*.tsx
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          rm -rf _staging scripts/restore_staging.py || true
+          git add -A
+          git status
+          git diff --cached --stat
+          git commit -m "feat: add remaining app sources (demo data only)" || echo "nothing to commit"
+          git push
